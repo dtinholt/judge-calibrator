@@ -242,7 +242,7 @@ found.
 ## Tests
 
 ```
-python3 -W error -m unittest discover -s tests -v   # 135 tests, about 8 s, no outside network
+python3 -W error -m unittest discover -s tests -v   # 135 tests (36 skip without the private study fixture), about 8 s, no outside network
 bash tests/smoke.sh                                  # 13 headless Chrome checks; exit 1 on failure
 ```
 
