@@ -1,0 +1,8 @@
+{"item": "a1", "repeat": 0, "class": "pass", "confidence": "high"}
+{"item": "a2", "repeat": 0, "class": "FAIL", "confidence": "low"}
+{"item": "a3", "repeat": 0, "class": "FAIL", "confidence": "30"}
+{"item": "a4", "repeat": 0, "class": "PASS", "confidence": "0.9"}
+{"item": "a1", "repeat": 1, "class": "PASS", "confidence": "high"}
+{"item": "a2", "repeat": 1, "class": "PASS", "confidence": "medium"}
+{"item": "a3", "repeat": 1, "class": "FAIL", "confidence": "0.2"}
+{"item": "a4", "repeat": 1, "class": "MAYBE", "confidence": "high"}

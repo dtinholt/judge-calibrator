@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judge Calibrator Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#f3f0e6; --ink:#1c1d19; --graphite:#5d5f55; --rule:#d3cdb9; --ledger:#1d4a6b; --stamp:#a3361d;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#171814; --ink:#e7e3d5; --graphite:#a09f93; --rule:#3a3a32; --ledger:#93bcdc; --stamp:#e58d6c; }
+}
+:root[data-theme="dark"]{ --paper:#171814; --ink:#e7e3d5; --graphite:#a09f93; --rule:#3a3a32; --ledger:#93bcdc; --stamp:#e58d6c; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--body);font-variant-numeric:tabular-nums;overflow-x:hidden}
+.frame{max-width:62rem;margin:0 auto;padding:0 16px}
+a{color:var(--ledger);text-underline-offset:.2em}
+a:focus-visible{outline:2px solid var(--ledger);outline-offset:2px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:16px;top:8px;background:var(--paper);padding:.25rem .5rem;z-index:2}
+p{margin:0 0 1rem;max-width:66ch;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.01em;margin:0;overflow-wrap:anywhere}
+h1{font-size:2.1rem;line-height:1.12;margin:0 0 1rem}
+h2{font-size:1.35rem;line-height:1.25;margin:0 0 .75rem}
+h3{font-size:1.05rem;margin:0 0 .4rem}
+.mono{font-family:var(--mono);font-size:.8rem;color:var(--graphite)}
+.masthead{border-top:4px solid var(--ink);border-bottom:1px solid var(--ink)}
+.mast{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.2rem 2rem;padding-top:.9rem;padding-bottom:.75rem}
+.brand{color:var(--ink);text-decoration:none;font-family:var(--display);font-size:1.6rem;font-weight:600;line-height:1.1;letter-spacing:-.015em}
+.register{margin:0;font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--graphite)}
+main.frame{padding-top:2rem;padding-bottom:2rem}
+.kicker{font-family:var(--mono);font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);margin:0 0 .75rem}
+.lede{font-size:1.15rem;line-height:1.5;max-width:60ch}
+.pagehead{padding-bottom:1rem}
+.summary{padding:1.25rem 0 1.5rem;border-top:1px solid var(--ink);border-bottom:3px double var(--ink)}
+.summary h2{font-family:var(--mono);font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);font-weight:500;margin:0 0 .25rem}
+.summary .wavers{margin-top:1rem}
+.summary .cost{font-family:var(--mono);font-size:.8rem;color:var(--graphite);max-width:none}
+.entry{padding:1.5rem 0;border-bottom:1px solid var(--rule)}
+.figures{width:100%;border-collapse:collapse}
+.figures td{border-bottom:1px solid var(--rule);padding:.85rem 0;vertical-align:baseline}
+.fig-n{font-family:var(--mono);font-weight:500;font-size:1.9rem;line-height:1;letter-spacing:-.02em;text-align:right;padding-right:1rem!important;white-space:nowrap;width:1%}
+.fig-l{font-size:1rem;line-height:1.4;overflow-wrap:anywhere}
+.fig-s{display:block;margin-top:.2rem;font-family:var(--mono);font-size:.76rem;color:var(--graphite)}
+.fixture{margin:0 0 1rem}
+.stamp{display:inline-block;padding:.15rem .5rem;border:1.5px solid var(--stamp);border-radius:2px;font-family:var(--mono);font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;line-height:1.5;color:var(--stamp)}
+.t-pn{font-family:var(--mono);font-size:11px;fill:var(--graphite)}
+.printline{font-family:var(--mono);font-size:.9rem;border-left:3px solid var(--ledger);padding:.5rem .8rem;margin:1rem 0 0;max-width:46rem;overflow-wrap:anywhere}
+.tablewrap,.chartwrap{overflow-x:auto;max-width:100%}
+.tablewrap:focus-visible,.chartwrap:focus-visible{outline:2px solid var(--ledger);outline-offset:2px}
+.warn{font-family:var(--mono);font-size:.8rem;color:var(--ink);border-left:3px solid var(--graphite);padding:.3rem .7rem;max-width:46rem}
+table.data{border-collapse:collapse;width:100%;max-width:46rem;margin:0 0 .5rem;font-size:.92rem}
+table.data caption{text-align:left;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);padding-bottom:.4rem}
+table.data th,table.data td{text-align:left;padding:.4rem .9rem .4rem 0;border-bottom:1px solid var(--rule);font-weight:400;vertical-align:baseline}
+table.data th[scope=row]{overflow-wrap:break-word;min-width:6.5rem}
+table.data thead th{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--graphite);border-bottom:1px solid var(--ink)}
+table.data td.n{font-family:var(--mono);white-space:nowrap}
+table.data tr.group th{font-family:var(--display);font-size:1rem;padding-top:.9rem;border-bottom:1px solid var(--ink)}
+.ci{font-family:var(--mono);font-size:.8rem;color:var(--graphite);white-space:nowrap}
+.conf{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1rem 2rem;max-width:56rem}
+table.cm{border-collapse:collapse;font-family:var(--mono);font-size:.8rem;min-width:16rem}
+table.cm caption{text-align:left;font-family:var(--body);font-size:.88rem;color:var(--ink);padding-bottom:.3rem;overflow-wrap:anywhere}
+table.cm th,table.cm td{padding:.2rem .45rem;border-bottom:1px solid var(--rule);text-align:right;font-weight:400}
+table.cm th{color:var(--graphite);font-size:.7rem}
+table.cm td.diag{color:var(--ledger);font-weight:600;text-decoration:underline;text-underline-offset:.2em}
+table.cm td.zero{color:var(--graphite)}
+.chart{margin:.5rem 0;padding:1rem 0 .75rem;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);max-width:46rem}
+.chart svg{display:block;width:100%;min-width:560px;height:auto;overflow:visible}
+.chart text{font-family:var(--body)}
+.t-axis{font-size:11px;fill:var(--graphite)}
+.t-lab{font-size:13px;fill:var(--ink)}
+.t-val{font-family:var(--mono)!important;font-size:12px;fill:var(--ink)}
+.grid{stroke:var(--rule);stroke-width:1}
+.ref{stroke:var(--graphite);stroke-width:1;stroke-dasharray:3 3}
+.stem{stroke-width:2.5}
+.m-accent{stroke:var(--ledger);fill:var(--ledger)}
+.m-grey{stroke:var(--graphite);fill:var(--graphite)}
+.dot{stroke:var(--paper);stroke-width:2}
+.sq{stroke:var(--paper);stroke-width:2}
+figcaption{margin-top:.6rem;font-size:.88rem;color:var(--graphite);max-width:66ch}
+.src{display:block;margin-top:.25rem;font-family:var(--mono);font-size:.74rem;color:var(--graphite);overflow-wrap:anywhere}
+ul{padding-left:1.1rem;max-width:66ch}
+li{margin-bottom:.4rem}
+.colophon{border-top:1px solid var(--ink);padding-top:1rem;padding-bottom:2.5rem;font-size:.88rem;color:var(--graphite)}
+.colophon p{margin-bottom:.4rem}
+@media (max-width:39.99rem){
+  .fig-n{font-size:1.5rem}
+  .tablewrap.wide::before,.chartwrap::before{content:"scrolls sideways";display:block;position:sticky;left:0;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);padding:0 0 .35rem}
+}
+@media (min-width:40rem){ h1{font-size:2.5rem} .fig-n{font-size:2.4rem} }
+@media (min-width:62rem){
+  .entry{display:grid;grid-template-columns:11rem minmax(0,46rem);column-gap:2.5rem}
+  .entry>*{grid-column:2}
+  .entry>h2{grid-column:1;grid-row:1/span 20;font-size:1.15rem;padding-top:.1rem}
+}
+@media print{
+  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--paper:#fff;--ink:#111;--graphite:#444;--rule:#bbb;--ledger:#1d4a6b;--stamp:#a3361d}
+  @page{margin:15mm 14mm}
+  html,body{background:#fff}
+  body{font-size:10pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .frame{max-width:none;padding:0}
+  main.frame{padding-top:.8rem;padding-bottom:0}
+  .skip{display:none}
+  h1{font-size:20pt;margin-bottom:.5rem}
+  .lede{font-size:11pt}
+  .fig-n{font-size:18pt}
+  .figures td{padding:.45rem 0}
+  .summary{break-after:page;page-break-after:always;padding:.8rem 0 .8rem}
+  .entry{display:block;padding:.9rem 0}
+  .entry>h2{font-size:13pt;margin-bottom:.4rem;break-after:avoid;page-break-after:avoid}
+  table,figure,.printline,tr,.judgeblock{break-inside:avoid;page-break-inside:avoid}
+  h3{break-after:avoid;page-break-after:avoid}
+  .tablewrap,.chartwrap{overflow:visible}
+  .tablewrap::before,.chartwrap::before{display:none!important}
+  .chart svg{min-width:0}
+  .t-val{display:inline}
+  .colophon a[href^="http"]::after{content:" (" attr(href) ")";font-family:var(--mono);font-size:8pt}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the report</a>
+<header class="masthead"><div class="frame mast">
+<a class="brand" href="https://dinand.com/research/">Dinand Tinholt · Research</a>
+<p class="register">Judge Calibrator · consistency report</p>
+</div></header>
+<main class="frame" id="main">
+<p class="fixture"><span class="stamp">Synthetic demo data from a fixed pattern; not a measurement of any judge.</span></p>
+<section class="pagehead">
+<p class="kicker">2026-10-10 · rubric synthetic-demo</p>
+<h1>Judge consistency report (synthetic demo)</h1>
+<p class="lede">3 judges (frontier, mid, small) classified 60 items into
+3 classes (PASS, PARTIAL, FAIL), each judge up to 3 times.</p>
+
+</section>
+
+<section class="summary" aria-labelledby="h-summary">
+<h2 id="h-summary">Summary</h2>
+<table class="figures"><tr><td class="fig-n">±0.04</td><td class="fig-l">Judge noise to print beside a number this judge produces.<span class="fig-s">half of 5/60 = 0.083 test-retest disagreement, frontier; unrounded 0.042; paired 60 / unpaired 0</span></td></tr><tr><td class="fig-n">0.917</td><td class="fig-l">frontier agrees with its own second run on 55 of 60 items.<span class="fig-s">Wilson 95% [0.819, 0.964], Cohen’s κ 0.866, bootstrap 95% [0.747, 0.971]; paired 60 / unpaired 0</span></td></tr><tr><td class="fig-n">0.883</td><td class="fig-l">mid matches frontier on 53 of 60 items, the closest of the other judges.<span class="fig-s">Wilson 95% [0.778, 0.942], κ 0.812; inside the reference’s own retest interval [0.819, 0.964]</span></td></tr></table>
+<p class="wavers">frontier changed its class on 5 of 60 paired items between run 1 and run 2. PARTIAL took part in 5 of those flips, more than any other class. The commonest move ran between PARTIAL and FAIL: 2 went from PARTIAL on run 1 to FAIL on run 2, 2 the other way. Specific agreement, the share of verdicts naming a class that the other run matched, bottoms out at 0.833 for FAIL (24 verdicts named it).</p>
+<p>Rounded to two places, frontier&#x27;s band moves from ±0.04 with 2 runs to ±0.06 with 3. Taken one pair at a time, the 3 pairs give bands from ±0.042 to ±0.075.</p><p>Across 2 strata from your strata file, the reference retest is lowest in short cases: 27 of 30 (0.900, Wilson [0.744, 0.965]).</p>
+
+<p class="printline">judge noise ±0.04 (half the frontier test-retest disagreement, 5/60 = 0.083; paired n = 60, unpaired 0)</p>
+<p class="cost">cost: no prices given (pass --price NAME=IN,OUT in USD per million tokens)</p>
+<span class="src">demo/data/, written by demo/data/make_synthetic.py</span>
+</section>
+
+<section class="entry" aria-labelledby="h-agree">
+<h2 id="h-agree">Agreement</h2>
+<figure class="chart" style="margin-left:0;margin-right:0">
+<div class="chartwrap" tabindex="0" role="region" aria-label="Agreement chart"><svg viewBox="0 0 560 218" role="img" aria-labelledby="chart-t chart-d"><title id="chart-t">Agreement with 95% Wilson intervals</title><desc id="chart-d">frontier, run 1 vs run 2: 0.917 [0.819, 0.964]; frontier vs mid: 0.883 [0.778, 0.942]; frontier vs small: 0.783 [0.664, 0.869]; mid vs small: 0.700 [0.575, 0.801]</desc><text class="t-axis" x="16.0" y="14" text-anchor="middle">0.50</text><text class="t-axis" x="120.8" y="14" text-anchor="middle">0.60</text><text class="t-axis" x="225.6" y="14" text-anchor="middle">0.70</text><text class="t-axis" x="330.4" y="14" text-anchor="middle">0.80</text><text class="t-axis" x="435.2" y="14" text-anchor="middle">0.90</text><text class="t-axis" x="540.0" y="14" text-anchor="middle">1.00</text><line class="grid" x1="16.0" x2="16.0" y1="47" y2="65"/><line class="grid" x1="120.8" x2="120.8" y1="47" y2="65"/><line class="grid" x1="225.6" x2="225.6" y1="47" y2="65"/><line class="grid" x1="330.4" x2="330.4" y1="47" y2="65"/><line class="grid" x1="435.2" x2="435.2" y1="47" y2="65"/><line class="grid" x1="540.0" x2="540.0" y1="47" y2="65"/><line class="ref" x1="452.7" x2="452.7" y1="47" y2="65"/><text class="t-lab" x="16" y="41">frontier, run 1 vs run 2<tspan class="t-pn"> · paired 60 / unpaired 0</tspan></text><text class="t-val" x="540" y="41" text-anchor="end">0.917 [0.819, 0.964]</text><line class="stem m-accent" x1="350.6" x2="502.1" y1="56" y2="56"/><circle class="dot m-accent" cx="452.7" cy="56" r="5.5"/><line class="grid" x1="16.0" x2="16.0" y1="93" y2="111"/><line class="grid" x1="120.8" x2="120.8" y1="93" y2="111"/><line class="grid" x1="225.6" x2="225.6" y1="93" y2="111"/><line class="grid" x1="330.4" x2="330.4" y1="93" y2="111"/><line class="grid" x1="435.2" x2="435.2" y1="93" y2="111"/><line class="grid" x1="540.0" x2="540.0" y1="93" y2="111"/><line class="ref" x1="452.7" x2="452.7" y1="93" y2="111"/><text class="t-lab" x="16" y="87">frontier vs mid<tspan class="t-pn"> · paired 60 / unpaired 0</tspan></text><text class="t-val" x="540" y="87" text-anchor="end">0.883 [0.778, 0.942]</text><line class="stem m-grey" x1="307.6" x2="479.6" y1="102" y2="102"/><rect class="sq m-grey" x="412.7" y="97" width="10" height="10"/><line class="grid" x1="16.0" x2="16.0" y1="139" y2="157"/><line class="grid" x1="120.8" x2="120.8" y1="139" y2="157"/><line class="grid" x1="225.6" x2="225.6" y1="139" y2="157"/><line class="grid" x1="330.4" x2="330.4" y1="139" y2="157"/><line class="grid" x1="435.2" x2="435.2" y1="139" y2="157"/><line class="grid" x1="540.0" x2="540.0" y1="139" y2="157"/><line class="ref" x1="452.7" x2="452.7" y1="139" y2="157"/><text class="t-lab" x="16" y="133">frontier vs small<tspan class="t-pn"> · paired 60 / unpaired 0</tspan></text><text class="t-val" x="540" y="133" text-anchor="end">0.783 [0.664, 0.869]</text><line class="stem m-grey" x1="187.7" x2="402.5" y1="148" y2="148"/><rect class="sq m-grey" x="307.9" y="143" width="10" height="10"/><line class="grid" x1="16.0" x2="16.0" y1="185" y2="203"/><line class="grid" x1="120.8" x2="120.8" y1="185" y2="203"/><line class="grid" x1="225.6" x2="225.6" y1="185" y2="203"/><line class="grid" x1="330.4" x2="330.4" y1="185" y2="203"/><line class="grid" x1="435.2" x2="435.2" y1="185" y2="203"/><line class="grid" x1="540.0" x2="540.0" y1="185" y2="203"/><line class="ref" x1="452.7" x2="452.7" y1="185" y2="203"/><text class="t-lab" x="16" y="179">mid vs small<tspan class="t-pn"> · paired 60 / unpaired 0</tspan></text><text class="t-val" x="540" y="179" text-anchor="end">0.700 [0.575, 0.801]</text><line class="stem m-grey" x1="94.5" x2="331.5" y1="194" y2="194"/><rect class="sq m-grey" x="220.6" y="189" width="10" height="10"/></svg></div>
+<figcaption>Each marker is raw agreement, with its 95% Wilson interval drawn as a bar; the tables
+below hold the figures. A round ledger-blue marker means a judge was set against its own second
+run, while the grey squares compare pairs of judges, all on run 1. Where a second
+judge lands near the dashed line, which marks the reference judge’s test-retest agreement, it
+agrees with the first about as often as the first agrees with itself.<span class="src">demo/data/, written by demo/data/make_synthetic.py</span></figcaption>
+</figure>
+</section>
+
+<section class="entry" aria-labelledby="h-retest">
+<h2 id="h-retest">Test-retest</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Each judge against its own repeat"><table class="data">
+<caption>Each judge against its own repeat</caption>
+<thead><tr><th scope="col">runs</th><th scope="col">agree</th><th scope="col">paired / unpaired</th><th scope="col">rate [95%]</th><th scope="col">κ [bootstrap 95%]</th><th scope="col">band</th></tr></thead>
+<tbody><tr><th scope="row">frontier#1 vs frontier#2</th><td class="n">55/60</td><td class="n">60 / 0</td><td class="n">0.917 <span class="ci">[0.819, 0.964]</span></td><td class="n">0.866 <span class="ci">[0.747, 0.971]</span></td><td class="n">±0.042</td></tr><tr><th scope="row">frontier#1 vs frontier#3</th><td class="n">54/60</td><td class="n">60 / 0</td><td class="n">0.900 <span class="ci">[0.799, 0.953]</span></td><td class="n">0.841 <span class="ci">[0.712, 0.948]</span></td><td class="n">±0.050</td></tr><tr><th scope="row">frontier#2 vs frontier#3</th><td class="n">51/60</td><td class="n">60 / 0</td><td class="n">0.850 <span class="ci">[0.739, 0.919]</span></td><td class="n">0.763 <span class="ci">[0.613, 0.895]</span></td><td class="n">±0.075</td></tr><tr><th scope="row">mid</th><td class="n" colspan="5">one run only, not measured</td></tr><tr><th scope="row">small</th><td class="n" colspan="5">one run only, not measured</td></tr></tbody></table></div>
+<p>Agreement counts only items with a readable verdict on both runs. Unreadable replies and
+missing items leave the denominator and appear as unpaired. The band is half the share of
+paired items where a judge changed its class between runs; rounded to two places, it is the
+figure to print beside any score this judge produced. κ intervals are percentile bootstraps over items, 10,000 draws, seed 1.</p>
+</section>
+
+<section class="entry" aria-labelledby="h-sens">
+<h2 id="h-sens">Repeat sensitivity</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Band pooled over every pair among the first m runs"><table class="data">
+<caption>Band pooled over every pair among the first m runs</caption>
+<thead><tr><th scope="col">runs</th><th scope="col">pairs</th><th scope="col">flips</th><th scope="col">band</th></tr></thead>
+<tbody><tr><th scope="row">frontier, runs 1 to 2</th><td class="n">1</td><td class="n">5/60</td><td class="n">±0.042</td></tr><tr><th scope="row">frontier, runs 1 to 3</th><td class="n">3</td><td class="n">20/180</td><td class="n">±0.056</td></tr></tbody></table></div>
+<p>Rounded to two places, frontier&#x27;s band moves from ±0.04 with 2 runs to ±0.06 with 3. Taken one pair at a time, the 3 pairs give bands from ±0.042 to ±0.075.</p>
+<p>Every pair of runs also has its own row in the test-retest table. Pairs of runs share items, so
+the pooled figure is a description of this run, not an independent estimate.</p>
+</section>
+<section class="entry" aria-labelledby="h-wavers">
+<h2 id="h-wavers">Where the judge wavers</h2>
+<div class="judgeblock"><h3>frontier</h3><p>frontier changed its class on 5 of 60 paired items between run 1 and run 2. PARTIAL took part in 5 of those flips, more than any other class. The commonest move ran between PARTIAL and FAIL: 2 went from PARTIAL on run 1 to FAIL on run 2, 2 the other way. Specific agreement, the share of verdicts naming a class that the other run matched, bottoms out at 0.833 for FAIL (24 verdicts named it).</p><div class="tablewrap wide" tabindex="0" role="region" aria-label="frontier, run 1 vs run 2, per class"><table class="data"><caption>frontier, run 1 vs run 2, per class</caption><thead><tr><th scope="col">class</th><th scope="col">run 1</th><th scope="col">run 2</th><th scope="col">both</th><th scope="col">specific</th><th scope="col">flips</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="n">30</td><td class="n">29</td><td class="n">29</td><td class="n">0.983</td><td class="n">1</td></tr><tr><th scope="row">PARTIAL</th><td class="n">18</td><td class="n">19</td><td class="n">16</td><td class="n">0.865</td><td class="n">5</td></tr><tr><th scope="row">FAIL</th><td class="n">12</td><td class="n">12</td><td class="n">10</td><td class="n">0.833</td><td class="n">4</td></tr></tbody></table></div></div>
+<p>Specific agreement for a class is twice the items both runs put in it, over the verdicts
+that named it on either run. Flips counts the paired items where one run named the class
+and the other did not, so each flip is counted under two classes.</p>
+</section>
+
+<section class="entry" aria-labelledby="h-pairs">
+<h2 id="h-pairs">Between judges</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Pairwise, run 1 of each judge"><table class="data">
+<caption>Pairwise, run 1 of each judge</caption>
+<thead><tr><th scope="col">pair</th><th scope="col">agree</th><th scope="col">paired / unpaired</th><th scope="col">rate [95%]</th><th scope="col">κ [bootstrap 95%]</th></tr></thead>
+<tbody><tr><th scope="row">frontier vs mid</th><td class="n">53/60</td><td class="n">60 / 0</td><td class="n">0.883 <span class="ci">[0.778, 0.942]</span></td><td class="n">0.812 <span class="ci">[0.673, 0.923]</span></td></tr><tr><th scope="row">frontier vs small</th><td class="n">47/60</td><td class="n">60 / 0</td><td class="n">0.783 <span class="ci">[0.664, 0.869]</span></td><td class="n">0.653 <span class="ci">[0.477, 0.812]</span></td></tr><tr><th scope="row">mid vs small</th><td class="n">42/60</td><td class="n">60 / 0</td><td class="n">0.700 <span class="ci">[0.575, 0.801]</span></td><td class="n">0.520 <span class="ci">[0.331, 0.690]</span></td></tr></tbody></table></div>
+<p>Cohen’s κ discounts the agreement two judges would reach by chance from their class mix
+alone. A cheaper judge whose agreement with the reference sits inside the reference’s own
+test-retest interval is, on this rubric, hard to tell apart from it.</p>
+</section>
+
+<section class="entry" aria-labelledby="h-strata">
+<h2 id="h-strata">Strata</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Agreement within each stratum from the strata file"><table class="data">
+<caption>Agreement within each stratum from the strata file</caption>
+<thead><tr><th scope="col">comparison</th><th scope="col">agree</th><th scope="col">paired / unpaired</th><th scope="col">rate [95%]</th><th scope="col">κ</th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">long cases · 30 items</th></tr><tr><th scope="row">frontier#1 vs frontier#2</th><td class="n">28/30</td><td class="n">30 / 0</td><td class="n">0.933 <span class="ci">[0.787, 0.982]</span></td><td class="n">0.890</td></tr><tr><th scope="row">frontier vs mid</th><td class="n">26/30</td><td class="n">30 / 0</td><td class="n">0.867 <span class="ci">[0.703, 0.947]</span></td><td class="n">0.779</td></tr><tr><th scope="row">frontier vs small</th><td class="n">26/30</td><td class="n">30 / 0</td><td class="n">0.867 <span class="ci">[0.703, 0.947]</span></td><td class="n">0.781</td></tr><tr><th scope="row">mid vs small</th><td class="n">24/30</td><td class="n">30 / 0</td><td class="n">0.800 <span class="ci">[0.627, 0.905]</span></td><td class="n">0.672</td></tr><tr class="group"><th scope="rowgroup" colspan="5">short cases · 30 items</th></tr><tr><th scope="row">frontier#1 vs frontier#2</th><td class="n">27/30</td><td class="n">30 / 0</td><td class="n">0.900 <span class="ci">[0.744, 0.965]</span></td><td class="n">0.843</td></tr><tr><th scope="row">frontier vs mid</th><td class="n">27/30</td><td class="n">30 / 0</td><td class="n">0.900 <span class="ci">[0.744, 0.965]</span></td><td class="n">0.843</td></tr><tr><th scope="row">frontier vs small</th><td class="n">21/30</td><td class="n">30 / 0</td><td class="n">0.700 <span class="ci">[0.521, 0.833]</span></td><td class="n">0.525</td></tr><tr><th scope="row">mid vs small</th><td class="n">18/30</td><td class="n">30 / 0</td><td class="n">0.600 <span class="ci">[0.423, 0.754]</span></td><td class="n">0.380</td></tr></tbody></table></div>
+<p>The strata come from the file you supplied; judgecal never derives them from verdicts or
+answers. Items the file does not mention sit under “(no stratum)”. Small strata give wide
+intervals; the κ here has no bootstrap interval.</p>
+</section>
+<section class="entry" aria-labelledby="h-conf">
+<h2 id="h-conf">Confidence</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Low-confidence verdicts and class mix per run"><table class="data">
+<caption>Low-confidence verdicts and class mix per run</caption>
+<thead><tr><th scope="col">run</th><th scope="col">low</th><th scope="col">unreadable</th><th scope="col">missing</th><th scope="col">class mix</th></tr></thead>
+<tbody><tr><th scope="row">frontier run 1</th><td class="n">2/60 <span class="ci">0.033</span></td><td class="n">0</td><td class="n">0</td><td class="n">PASS 30, PARTIAL 18, FAIL 12</td></tr><tr><th scope="row">frontier run 2</th><td class="n">7/60 <span class="ci">0.117</span></td><td class="n">0</td><td class="n">0</td><td class="n">PASS 29, PARTIAL 19, FAIL 12</td></tr><tr><th scope="row">frontier run 3</th><td class="n">4/60 <span class="ci">0.067</span></td><td class="n">0</td><td class="n">0</td><td class="n">PASS 28, PARTIAL 18, FAIL 14</td></tr><tr><th scope="row">mid run 1</th><td class="n">5/60 <span class="ci">0.083</span></td><td class="n">0</td><td class="n">0</td><td class="n">PASS 31, PARTIAL 15, FAIL 14</td></tr><tr><th scope="row">small run 1</th><td class="n">1/60 <span class="ci">0.017</span></td><td class="n">0</td><td class="n">0</td><td class="n">PASS 29, PARTIAL 18, FAIL 13</td></tr></tbody></table></div>
+<p>Low means the label “low” or a numeric confidence under 50 of 100. Read this column beside
+the retest table to see whether a judge flags the items it later flips.</p>
+</section>
+
+<section class="entry" aria-labelledby="h-cm">
+<h2 id="h-cm">Confusion</h2>
+<div class="conf"><div class="tablewrap" tabindex="0" role="region" aria-label="frontier#1 (rows) by frontier#2 (columns), 55 of 60 on the diagonal (underlined); paired 60 / unpaired 0"><table class="cm"><caption>frontier#1 (rows) by frontier#2 (columns), 55 of 60 on the diagonal (underlined); paired 60 / unpaired 0</caption><thead><tr><td></td><th scope="col">PASS</th><th scope="col">PARTIAL</th><th scope="col">FAIL</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="diag">29</td><td>1</td><td class="zero">0</td></tr><tr><th scope="row">PARTIAL</th><td class="zero">0</td><td class="diag">16</td><td>2</td></tr><tr><th scope="row">FAIL</th><td class="zero">0</td><td>2</td><td class="diag">10</td></tr></tbody></table></div><div class="tablewrap" tabindex="0" role="region" aria-label="frontier (rows) by mid (columns), 53 of 60 on the diagonal (underlined); paired 60 / unpaired 0"><table class="cm"><caption>frontier (rows) by mid (columns), 53 of 60 on the diagonal (underlined); paired 60 / unpaired 0</caption><thead><tr><td></td><th scope="col">PASS</th><th scope="col">PARTIAL</th><th scope="col">FAIL</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="diag">28</td><td>1</td><td>1</td></tr><tr><th scope="row">PARTIAL</th><td>2</td><td class="diag">14</td><td>2</td></tr><tr><th scope="row">FAIL</th><td>1</td><td class="zero">0</td><td class="diag">11</td></tr></tbody></table></div><div class="tablewrap" tabindex="0" role="region" aria-label="frontier (rows) by small (columns), 47 of 60 on the diagonal (underlined); paired 60 / unpaired 0"><table class="cm"><caption>frontier (rows) by small (columns), 47 of 60 on the diagonal (underlined); paired 60 / unpaired 0</caption><thead><tr><td></td><th scope="col">PASS</th><th scope="col">PARTIAL</th><th scope="col">FAIL</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="diag">25</td><td>3</td><td>2</td></tr><tr><th scope="row">PARTIAL</th><td>3</td><td class="diag">13</td><td>2</td></tr><tr><th scope="row">FAIL</th><td>1</td><td>2</td><td class="diag">9</td></tr></tbody></table></div><div class="tablewrap" tabindex="0" role="region" aria-label="mid (rows) by small (columns), 42 of 60 on the diagonal (underlined); paired 60 / unpaired 0"><table class="cm"><caption>mid (rows) by small (columns), 42 of 60 on the diagonal (underlined); paired 60 / unpaired 0</caption><thead><tr><td></td><th scope="col">PASS</th><th scope="col">PARTIAL</th><th scope="col">FAIL</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="diag">24</td><td>4</td><td>3</td></tr><tr><th scope="row">PARTIAL</th><td>3</td><td class="diag">10</td><td>2</td></tr><tr><th scope="row">FAIL</th><td>2</td><td>4</td><td class="diag">8</td></tr></tbody></table></div></div>
+</section>
+
+<section class="entry" aria-labelledby="h-cost">
+<h2 id="h-cost">Cost</h2>
+<p class="cost mono">cost: no prices given (pass --price NAME=IN,OUT in USD per million tokens)</p>
+<p>Cost comes from the token counts the endpoint returned with each reply, at the prices you
+passed in US dollars per million tokens. Calls that failed, and retried attempts whose reply
+was unreadable, are left out; a replayed judge shows the counts recorded from its original run.</p>
+</section>
+
+<section class="entry" aria-labelledby="h-limits">
+<h2 id="h-limits">Limits</h2>
+<ul>
+<li>The band follows a convention from a registered judge-reliability study: half the observed
+test-retest disagreement. Print it on its own line beside the sampling interval.</li>
+<li>A retest figure cannot separate sampling noise from a model that changed between runs; both
+land in the same number.</li>
+</ul>
+</section>
+</main>
+<footer class="frame colophon">
+<p>Generated by judgecal 0.2.1 on 2026-10-10. Statistics after a registered judge-reliability study, October 2026: Wilson 95% intervals, Cohen’s κ, band as half the test-retest disagreement.</p>
+<p><a href="https://dinand.com/research/">dinand.com/research</a></p>
+</footer>
+</body>
+</html>

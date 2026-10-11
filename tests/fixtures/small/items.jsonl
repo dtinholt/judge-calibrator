@@ -1,0 +1,4 @@
+{"id": "a1", "text": "Invoice total matches the purchase order.", "split": "dev"}
+{"id": "a2", "text": "Supplier certificate expired last year."}
+{"id": "a3", "input": "Two documents name different legal entities."}
+{"id": "a4", "prompt": "No bank confirmation on file."}

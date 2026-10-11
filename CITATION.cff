@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "The Judge Calibrator"
+abstract: >-
+  Measures how consistent model judges are with themselves and each other: test-retest agreement, Cohen kappa and a judge-noise band.
+authors:
+  - family-names: Tinholt
+    given-names: Dinand
+version: 0.2.1
+date-released: 2026-10-11
+license: Apache-2.0
+repository-code: "https://github.com/dtinholt/judge-calibrator"
+url: "https://dinand.com/experiments/judge-calibrator/"
+keywords:
+  - LLM-as-judge
+  - evaluation
+  - inter-rater agreement
+  - kappa
+  - calibration

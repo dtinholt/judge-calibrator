@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judge Drift Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#f3f0e6; --ink:#1c1d19; --graphite:#5d5f55; --rule:#d3cdb9; --ledger:#1d4a6b; --stamp:#a3361d;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#171814; --ink:#e7e3d5; --graphite:#a09f93; --rule:#3a3a32; --ledger:#93bcdc; --stamp:#e58d6c; }
+}
+:root[data-theme="dark"]{ --paper:#171814; --ink:#e7e3d5; --graphite:#a09f93; --rule:#3a3a32; --ledger:#93bcdc; --stamp:#e58d6c; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--body);font-variant-numeric:tabular-nums;overflow-x:hidden}
+.frame{max-width:62rem;margin:0 auto;padding:0 16px}
+a{color:var(--ledger);text-underline-offset:.2em}
+a:focus-visible{outline:2px solid var(--ledger);outline-offset:2px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:16px;top:8px;background:var(--paper);padding:.25rem .5rem;z-index:2}
+p{margin:0 0 1rem;max-width:66ch;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.01em;margin:0;overflow-wrap:anywhere}
+h1{font-size:2.1rem;line-height:1.12;margin:0 0 1rem}
+h2{font-size:1.35rem;line-height:1.25;margin:0 0 .75rem}
+h3{font-size:1.05rem;margin:0 0 .4rem}
+.mono{font-family:var(--mono);font-size:.8rem;color:var(--graphite)}
+.masthead{border-top:4px solid var(--ink);border-bottom:1px solid var(--ink)}
+.mast{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.2rem 2rem;padding-top:.9rem;padding-bottom:.75rem}
+.brand{color:var(--ink);text-decoration:none;font-family:var(--display);font-size:1.6rem;font-weight:600;line-height:1.1;letter-spacing:-.015em}
+.register{margin:0;font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--graphite)}
+main.frame{padding-top:2rem;padding-bottom:2rem}
+.kicker{font-family:var(--mono);font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);margin:0 0 .75rem}
+.lede{font-size:1.15rem;line-height:1.5;max-width:60ch}
+.pagehead{padding-bottom:1rem}
+.summary{padding:1.25rem 0 1.5rem;border-top:1px solid var(--ink);border-bottom:3px double var(--ink)}
+.summary h2{font-family:var(--mono);font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);font-weight:500;margin:0 0 .25rem}
+.summary .wavers{margin-top:1rem}
+.summary .cost{font-family:var(--mono);font-size:.8rem;color:var(--graphite);max-width:none}
+.entry{padding:1.5rem 0;border-bottom:1px solid var(--rule)}
+.figures{width:100%;border-collapse:collapse}
+.figures td{border-bottom:1px solid var(--rule);padding:.85rem 0;vertical-align:baseline}
+.fig-n{font-family:var(--mono);font-weight:500;font-size:1.9rem;line-height:1;letter-spacing:-.02em;text-align:right;padding-right:1rem!important;white-space:nowrap;width:1%}
+.fig-l{font-size:1rem;line-height:1.4;overflow-wrap:anywhere}
+.fig-s{display:block;margin-top:.2rem;font-family:var(--mono);font-size:.76rem;color:var(--graphite)}
+.fixture{margin:0 0 1rem}
+.stamp{display:inline-block;padding:.15rem .5rem;border:1.5px solid var(--stamp);border-radius:2px;font-family:var(--mono);font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;line-height:1.5;color:var(--stamp)}
+.t-pn{font-family:var(--mono);font-size:11px;fill:var(--graphite)}
+.printline{font-family:var(--mono);font-size:.9rem;border-left:3px solid var(--ledger);padding:.5rem .8rem;margin:1rem 0 0;max-width:46rem;overflow-wrap:anywhere}
+.tablewrap,.chartwrap{overflow-x:auto;max-width:100%}
+.tablewrap:focus-visible,.chartwrap:focus-visible{outline:2px solid var(--ledger);outline-offset:2px}
+.warn{font-family:var(--mono);font-size:.8rem;color:var(--ink);border-left:3px solid var(--graphite);padding:.3rem .7rem;max-width:46rem}
+table.data{border-collapse:collapse;width:100%;max-width:46rem;margin:0 0 .5rem;font-size:.92rem}
+table.data caption{text-align:left;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--graphite);padding-bottom:.4rem}
+table.data th,table.data td{text-align:left;padding:.4rem .9rem .4rem 0;border-bottom:1px solid var(--rule);font-weight:400;vertical-align:baseline}
+table.data th[scope=row]{overflow-wrap:break-word;min-width:6.5rem}
+table.data thead th{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--graphite);border-bottom:1px solid var(--ink)}
+table.data td.n{font-family:var(--mono);white-space:nowrap}
+table.data tr.group th{font-family:var(--display);font-size:1rem;padding-top:.9rem;border-bottom:1px solid var(--ink)}
+.ci{font-family:var(--mono);font-size:.8rem;color:var(--graphite);white-space:nowrap}
+.conf{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:1rem 2rem;max-width:56rem}
+table.cm{border-collapse:collapse;font-family:var(--mono);font-size:.8rem;min-width:16rem}
+table.cm caption{text-align:left;font-family:var(--body);font-size:.88rem;color:var(--ink);padding-bottom:.3rem;overflow-wrap:anywhere}
+table.cm th,table.cm td{padding:.2rem .45rem;border-bottom:1px solid var(--rule);text-align:right;font-weight:400}
+table.cm th{color:var(--graphite);font-size:.7rem}
+table.cm td.diag{color:var(--ledger);font-weight:600;text-decoration:underline;text-underline-offset:.2em}
+table.cm td.zero{color:var(--graphite)}
+.chart{margin:.5rem 0;padding:1rem 0 .75rem;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);max-width:46rem}
+.chart svg{display:block;width:100%;min-width:560px;height:auto;overflow:visible}
+.chart text{font-family:var(--body)}
+.t-axis{font-size:11px;fill:var(--graphite)}
+.t-lab{font-size:13px;fill:var(--ink)}
+.t-val{font-family:var(--mono)!important;font-size:12px;fill:var(--ink)}
+.grid{stroke:var(--rule);stroke-width:1}
+.ref{stroke:var(--graphite);stroke-width:1;stroke-dasharray:3 3}
+.stem{stroke-width:2.5}
+.m-accent{stroke:var(--ledger);fill:var(--ledger)}
+.m-grey{stroke:var(--graphite);fill:var(--graphite)}
+.dot{stroke:var(--paper);stroke-width:2}
+.sq{stroke:var(--paper);stroke-width:2}
+figcaption{margin-top:.6rem;font-size:.88rem;color:var(--graphite);max-width:66ch}
+.src{display:block;margin-top:.25rem;font-family:var(--mono);font-size:.74rem;color:var(--graphite);overflow-wrap:anywhere}
+ul{padding-left:1.1rem;max-width:66ch}
+li{margin-bottom:.4rem}
+.colophon{border-top:1px solid var(--ink);padding-top:1rem;padding-bottom:2.5rem;font-size:.88rem;color:var(--graphite)}
+.colophon p{margin-bottom:.4rem}
+@media (max-width:39.99rem){
+  .fig-n{font-size:1.5rem}
+  .tablewrap.wide::before,.chartwrap::before{content:"scrolls sideways";display:block;position:sticky;left:0;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);padding:0 0 .35rem}
+}
+@media (min-width:40rem){ h1{font-size:2.5rem} .fig-n{font-size:2.4rem} }
+@media (min-width:62rem){
+  .entry{display:grid;grid-template-columns:11rem minmax(0,46rem);column-gap:2.5rem}
+  .entry>*{grid-column:2}
+  .entry>h2{grid-column:1;grid-row:1/span 20;font-size:1.15rem;padding-top:.1rem}
+}
+@media print{
+  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--paper:#fff;--ink:#111;--graphite:#444;--rule:#bbb;--ledger:#1d4a6b;--stamp:#a3361d}
+  @page{margin:15mm 14mm}
+  html,body{background:#fff}
+  body{font-size:10pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .frame{max-width:none;padding:0}
+  main.frame{padding-top:.8rem;padding-bottom:0}
+  .skip{display:none}
+  h1{font-size:20pt;margin-bottom:.5rem}
+  .lede{font-size:11pt}
+  .fig-n{font-size:18pt}
+  .figures td{padding:.45rem 0}
+  .summary{break-after:page;page-break-after:always;padding:.8rem 0 .8rem}
+  .entry{display:block;padding:.9rem 0}
+  .entry>h2{font-size:13pt;margin-bottom:.4rem;break-after:avoid;page-break-after:avoid}
+  table,figure,.printline,tr,.judgeblock{break-inside:avoid;page-break-inside:avoid}
+  h3{break-after:avoid;page-break-after:avoid}
+  .tablewrap,.chartwrap{overflow:visible}
+  .tablewrap::before,.chartwrap::before{display:none!important}
+  .chart svg{min-width:0}
+  .t-val{display:inline}
+  .colophon a[href^="http"]::after{content:" (" attr(href) ")";font-family:var(--mono);font-size:8pt}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the report</a>
+<header class="masthead"><div class="frame mast">
+<a class="brand" href="https://dinand.com/research/">Dinand Tinholt · Research</a>
+<p class="register">Judge Calibrator · drift report</p>
+</div></header>
+<main class="frame" id="main">
+<section class="pagehead">
+<p class="kicker">2026-10-10 · test-retest across sessions</p>
+<h1>Judge drift report (synthetic demo)</h1>
+<p class="lede">Session A (verdicts-2026-09-28.jsonl, dated 2026-09-28) against session B
+(verdicts-2026-10-05.jsonl, dated 2026-10-05), 7 days apart, run 1
+of each file.</p>
+</section>
+<section class="summary" aria-labelledby="h-summary">
+<h2 id="h-summary">Summary</h2>
+<table class="figures"><tr><td class="fig-n">0.867</td><td class="fig-l">frontier agrees with itself across sessions on 52 of 60 items.<span class="fig-s">Wilson 95% [0.758, 0.931], κ 0.787; paired 60 / unpaired 0</span></td></tr></table>
+<p>Across sessions frontier gave the same class to 52 of 60 paired items (0.867, Wilson 95% [0.758, 0.931]). Its two runs within session A agreed on 55 of 60 (0.917, [0.819, 0.964]); the across-session rate sits inside that interval.</p>
+
+
+<span class="src">Synthetic demo data from a fixed pattern; not a measurement of any judge. demo/data/, written by demo/data/make_synthetic.py</span>
+</section>
+<section class="entry" aria-labelledby="h-drift">
+<h2 id="h-drift">Drift</h2>
+<div class="tablewrap wide" tabindex="0" role="region" aria-label="Same judge, same items, two sessions"><table class="data">
+<caption>Same judge, same items, two sessions</caption>
+<thead><tr><th scope="col">runs</th><th scope="col">kind</th><th scope="col">agree</th><th scope="col">paired / unpaired</th><th scope="col">rate [95%]</th><th scope="col">κ [bootstrap 95%]</th></tr></thead>
+<tbody><tr><th scope="row">frontier A vs frontier B</th><td class="n">A vs B</td><td class="n">52/60</td><td class="n">60 / 0</td><td class="n">0.867 <span class="ci">[0.758, 0.931]</span></td><td class="n">0.787 <span class="ci">[0.634, 0.918]</span></td></tr><tr><th scope="row">frontier A#1 vs frontier A#2</th><td class="n">within</td><td class="n">55/60</td><td class="n">60 / 0</td><td class="n">0.917 <span class="ci">[0.819, 0.964]</span></td><td class="n">0.866 <span class="ci">[0.744, 0.972]</span></td></tr></tbody></table></div>
+<p>This is test-retest across sessions, the design a registered judge-reliability study (October
+2026) used for drift. Anything that changed between the two days lands in the across-session
+figure, sampling noise included. Where a file holds two runs, the within-session row shows how
+much of that the judge produces on a single day.</p>
+</section>
+<section class="entry" aria-labelledby="h-cm">
+<h2 id="h-cm">Confusion</h2>
+<div class="conf"><div class="tablewrap" tabindex="0" role="region" aria-label="frontier A (rows) by frontier B (columns), 52 of 60 on the diagonal (underlined); paired 60 / unpaired 0"><table class="cm"><caption>frontier A (rows) by frontier B (columns), 52 of 60 on the diagonal (underlined); paired 60 / unpaired 0</caption><thead><tr><td></td><th scope="col">PASS</th><th scope="col">PARTIAL</th><th scope="col">FAIL</th></tr></thead><tbody><tr><th scope="row">PASS</th><td class="diag">26</td><td>2</td><td>2</td></tr><tr><th scope="row">PARTIAL</th><td>1</td><td class="diag">16</td><td>1</td></tr><tr><th scope="row">FAIL</th><td>2</td><td class="zero">0</td><td class="diag">10</td></tr></tbody></table></div></div>
+</section>
+</main>
+<footer class="frame colophon">
+<p>Generated by judgecal 0.2.1 on 2026-10-10. Design after a registered judge-reliability study, October 2026: test-retest across sessions.</p>
+<p><a href="https://dinand.com/research/">dinand.com/research</a></p>
+</footer>
+</body>
+</html>

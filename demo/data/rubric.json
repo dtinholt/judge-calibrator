@@ -1,0 +1,14 @@
+{
+ "name": "synthetic-demo",
+ "classes": [
+  "PASS",
+  "PARTIAL",
+  "FAIL"
+ ],
+ "instruction": "Synthetic demo rubric. Decide whether the case meets the requirement.",
+ "descriptions": {
+  "PASS": "meets it",
+  "PARTIAL": "meets part of it",
+  "FAIL": "does not meet it"
+ }
+}

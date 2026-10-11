@@ -1,0 +1,3 @@
+include README.md CHANGELOG.md LICENSE
+prune tests/private
+global-exclude __pycache__ *.py[cod]

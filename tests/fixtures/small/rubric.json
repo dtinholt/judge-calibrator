@@ -1,0 +1,1 @@
+{"name": "pass-fail", "classes": ["PASS", "FAIL"], "instruction": "Decide whether the evidence passes.", "descriptions": {"PASS": "evidence is sufficient", "FAIL": "evidence is missing or wrong"}}

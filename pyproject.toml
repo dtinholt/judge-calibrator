@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "judgecal"
+version = "0.2.1"
+description = "Measure how consistent model judges are: test-retest agreement, pairwise kappa, and a judge-noise band."
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Dinand Tinholt" }]
+readme = "README.md"
+classifiers = ["License :: OSI Approved :: Apache Software License"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://dinand.com/experiments/judge-calibrator/"
+Source = "https://github.com/dtinholt/judge-calibrator"
+
+[project.scripts]
+judgecal = "judgecal.cli:main"
+
+[tool.setuptools]
+# Only the judgecal package ships in a wheel.
+packages = ["judgecal"]
+include-package-data = false
